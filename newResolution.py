@@ -89,19 +89,43 @@ def drawCircle(n):
     for x in range(n):
         for y in range(n):
             pt = Point(x**2, y**2)
+            #pt.draw(win)
+    dimx = 300
+    dimy = 300
+    center = (dimx/2, dimy/2)
+    for x in range(1,n):
+        for y in range(1, n):
+            #print(math.sqrt(1-x**2), x)
+            # when y = 0, x should be +/-1
+            # when x = 0, y should be +/-1
+            #pt = Point(center[0]+50*math.sin(y),center[1]+50*math.sin(x))
+            pt = Point(center[0]+10*math.cos(x),center[1]+10*math.sin(x))
             pt.draw(win)
 
 
+def cartToPolar(x,y):
+    rho = math.sqrt(x**2 + y**2)
+    theta = math.atan(float(y/x))
+    return (rho, theta)
+
+def polarToCart(rho,theta):
+    x = rho*math.cos(theta)
+    y = rho*math.sin(theta)
+    return (x,y)
+
 #screen dimension: 1366 x 768
 #over 3 = 455 x 256
+#int 0 for cartesian coordinates, 1 for polar
 #TODO: add moon / other planets 
-def randHillTops():
+def randHillTops(cartesian):
     #this will pick like 5 or so points at random and make increasingly
     #large circles going downward
     dimx = 455
     dimy = 256
-
+    center = (dimx/2, dimy/2)
     win = GraphWin("Hilltops", dimx, dimy)
+    p = Point(center[0], center[1])
+    p.draw(win)
     #create hills, mts
     for x in range(r.randrange(int(dimx/100), int(dimx/40))):
         i = r.randrange(0,dimx)
@@ -191,8 +215,13 @@ if __name__ == '__main__':
             x = int(input("number: "))
             drawCircle(x)
         elif(cont == 'h'):
-            randHillTops()
-        cont = input("MENU\n h - random hill tops\n a - circle draw\n n - fib\n c - random circles\n q - quit\n p - point line\n r - random shape\n")
+            randHillTops(0)
+        elif(cont == 't'):
+            x = float(input("enter x: "))
+            y = float(input("enter y: "))
+            cartToPolarTest(x, y)
+
+        cont = input("MENU\n t - cartToPolarTest\n h - random hill tops\n a - circle draw\n n - fib\n c - random circles\n q - quit\n p - point line\n r - random shape\n")
     print("Have a cool chill day!")
 
 
