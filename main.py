@@ -84,6 +84,46 @@ def circleRandom(numCircles):
             cir.move(r.randrange(25)/x, r.randrange(25)/x)
             #t.sleep(.05)
 
+
+def snowflake():
+    dimx = 300
+    dimy = 300
+    win = makeWin()
+    center = (dimx/2, dimy/2)
+    #change the value of xshrink and y shrink to divide the height and width of the blob
+    xshrink=1
+    yshrink=1
+    #change offset to move the circle left or right.
+    xoffset=0
+    yoffset=0
+    numPoints = r.randrange(6, 12)
+    for x in range(100): #x affects size outward
+        for y in range(12): #y affects number of legs. should be divisible by 6 for an "even" snowflake
+            cart = polarToCart(x,y)
+            pt = Point(cart[0]/xshrink+center[0]+xoffset,cart[1]/yshrink+center[1]+yoffset)
+            pt.draw(win)
+            if(x%10==0):
+                for z in range(20):
+                    #cartnew = polarToCart(x+z,y+z)
+                    cartnew = polarToCart(x,y+y*.1)
+                    ptnew = Point(cartnew[0]+center[0],cartnew[1]+center[1]+y)
+                    ptnew.draw(win)
+
+
+
+
+
+#this will draw a circle in a single loop, rather than overflowing
+def drawCircleNew(n):
+    win = makeWin()
+    dimx = 300
+    dimy = 300
+    center = (dimx/2, dimy/2)
+    for r in range(n):
+        for theta in range(n):
+            pt = Point(center[0])
+
+
 def drawCircle(n):
     win = makeWin()
     for x in range(n):
@@ -101,6 +141,7 @@ def drawCircle(n):
             #pt = Point(center[0]+50*math.sin(y),center[1]+50*math.sin(x))
             pt = Point(center[0]+10*math.cos(x),center[1]+10*math.sin(x))
             pt.draw(win)
+
 
 
 def cartToPolar(x,y):
@@ -146,9 +187,9 @@ def randHillTops(cartesian):
     for x in range(int(dimx/100)):
         i = r.randrange(0,dimx)
         j = r.randrange(0,int(dimy/3))
-        
+        #10 different circle spots 
         for y in range(10):
-            cloudx = i+r.randrange(-49, 50)
+            cloudx = i+r.randrange(-45, 50)+(y*10)
             cloudy = j+r.randrange(-9,10)
             #cir = Circle(Point(cloudx,cloudy), j/5)
             for z in range(5):
@@ -167,6 +208,93 @@ def randHillTops(cartesian):
         
 
 
+def carpets(n):
+    win = makeWin()
+    for w in range(n):
+        locx = r.randrange(0, 280)
+        locy = r.randrange(0, 280)
+        dimx = r.randrange(10, 30)
+        dimy = r.randrange(4, 15)
+        dimz = r.randrange(4, 15)
+        for x in range(dimx):
+            for y in range(dimy):
+                for z in range(dimz):
+                    #dot = Point(locx+5*x+2*z, locy+5*y)+2*z)
+                    dot = Point(locx+5*x+2*z, locy+5*math.sin(5*x)+2*z)
+                    dot.draw(win)
+
+
+def dotCube(n):
+    win = makeWin()
+    angle = [2,2] #default angle is [2, 2]
+    # for each cube
+    for w in range(n):
+        locx = r.randrange(0, 280)  #location on window
+        locy = r.randrange(0, 280)
+        dimx = r.randrange(4, 15)   #size of cube
+        dimy = r.randrange(4, 15)
+        dimz = r.randrange(4, 15)
+        for x in range(dimx):
+            for y in range(dimy):
+                for z in range(dimz):
+                    dot = Point(locx+5*x+angle[0]*z, locy+5*y+angle[1]*z)
+                    #dot = Point(locx+5*x+2*z, locy+5*math.sin(5*x)+2*z)
+                    dot.draw(win)
+        #debug section
+        cir = Circle(Point(locx, locy), 5)  #draws circle at base corner
+        cir.draw(win)
+        cir = Circle(Point(locx+angle[0]*dimz, locy+angle[1]*dimz), 5)
+        cir.draw(win)
+
+        for x in range (dimx*5):
+            #front box
+            pt = Point(locx+x, locy+(dimy*5))
+            pt.draw(win)
+            pt = Point(locx+x,locy)
+            pt.draw(win)
+            #back box
+            pt = Point(locx+x+(dimz),locy+(dimy*5)+(dimz))
+            pt.draw(win)
+            #pt = Point(locx, locy+dimy
+        for y in range (dimy*5):    
+            #front box
+            pt = Point(locx+(dimx*5),locy+y)
+            pt.draw(win)
+            pt = Point(locx, locy+y)
+            pt.draw(win)
+            #back box
+        for z in range (dimz*2):
+            pt = Point(locx+(dimx*5)+(z/5), locy+(5*dimy)+(z/5))
+            pt.draw(win)
+            #pt = Point(locx+(dimx*5)+(z/4)-1, locy+(dimy*5)+(z/4))
+            #pt.draw(win)
+
+def cubeSpin(n):
+    win = makeWin()
+    res = [300,300]
+    locx = res[0]/2
+    locy = res[1]/2
+    angle = [2,2] #default angle is [2, 2]
+    #each iteration of w is a slightly different angle of the cube
+    rect = Rectangle(Point(0,0),Point(300,300))
+    rect.setFill("white")
+    for w in range(n):
+        rect.draw(win)
+        dim = 5
+        for x in range(dim):
+            for y in range(dim):
+                for z in range(dim):
+                    dot = Point(locx+5*x+angle[0]*z, locy+5*y+angle[1]*z)
+                    #dot = Point(locx+5*x+2*z, locy+5*math.sin(5*x)+2*z)
+                    dot.draw(win)
+        #clear window
+        #increase angle. maybe use sin waves for this so they
+        angle = [angle[0]-math.sin(w),angle[1]+math.cos(w)]
+
+
+ 
+
+
 def newShit(n):
     i = 300
     j = 300
@@ -181,6 +309,7 @@ def newShit(n):
         cir.draw(win)
         cir2.draw(win)
         t.sleep(.01)
+        cir2.erase(win)
 
 
 # 1 1 2 3 5 8 13 21
@@ -191,6 +320,20 @@ def fibonacci(num):
         return num
     else:
         return fibonacci(num-1)+fibonacci(num-2)
+
+
+#make with circles of decreasing size? points may be too complicated
+# make a line of circles. keep track of last. from last, move in 3 raandom directions. recursive?
+def tree():
+    dimx = 455
+    dimy = 256
+    center = (dimx/2, dimy/2)
+    win = GraphWin("tree", dimx, dimy)
+    for x in range(20):
+        print()
+        for y in range(20):
+            print()
+
 
 
 
@@ -220,8 +363,17 @@ if __name__ == '__main__':
             x = float(input("enter x: "))
             y = float(input("enter y: "))
             cartToPolarTest(x, y)
+        elif(cont == 'o'):
+            snowflake()
+        elif(cont == 'd'):
+            cubes = int(input("enter number of cubes: "))
+            dotCube(cubes)
+        elif(cont == 'dd'):
+            carpets(10)
+        elif(cont == 'cs'):
+            cubeSpin(10)
 
-        cont = input("MENU\n t - cartToPolarTest\n h - random hill tops\n a - circle draw\n n - fib\n c - random circles\n q - quit\n p - point line\n r - random shape\n")
+        cont = input("MENU\n cs - cube spin\n dd - carpets\n d - dotcube\n o - snowflake\n t - cartToPolarTest\n h - random hill tops\n a - circle draw\n n - fib\n c - random circles\n q - quit\n p - point line\n r - random shape\n")
     print("Have a cool chill day!")
 
 
