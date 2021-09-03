@@ -415,7 +415,7 @@ if __name__ == '__main__':
     carpetButt.grid(row=6, column=4)
     
     exitButt = Button(root, text="quit", command = root.quit)
-    exitButt.grid(row=7)
+    exitButt.grid(row=6, column=5)
     root.mainloop()
 
 
