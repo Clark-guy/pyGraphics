@@ -157,7 +157,7 @@ def polarToCart(rho,theta):
 #screen dimension: 1366 x 768
 #over 3 = 455 x 256
 #int 0 for cartesian coordinates, 1 for polar
-#TODO: add moon / other planets 
+#TODO: add moon / planets 
 def randHillTops(cartesian):
     #this will pick like 5 or so points at random and make increasingly
     #large circles going downward
@@ -224,9 +224,17 @@ def carpets(n):
                     dot.draw(win)
 
 
-def dotCube(n):
+def dotCube(n, angle1, angle2):
     win = makeWin()
-    angle = [2,2] #default angle is [2, 2]
+    if (angle1 == ""):
+        angle1 = 2
+    else:
+        angle1 = int(angle1)
+    if (angle2 == ""):
+        angle2 = 2
+    else:
+        angle2 = int(angle2)
+    angle = [angle1,angle2] #default angle is [2, 2]
     # for each cube
     for w in range(n):
         locx = r.randrange(0, 280)  #location on window
@@ -241,31 +249,44 @@ def dotCube(n):
                     #dot = Point(locx+5*x+2*z, locy+5*math.sin(5*x)+2*z)
                     dot.draw(win)
         #debug section
-        cir = Circle(Point(locx, locy), 5)  #draws circle at base corner
-        cir.draw(win)
-        cir = Circle(Point(locx+angle[0]*dimz, locy+angle[1]*dimz), 5)
-        cir.draw(win)
+       # cir = Circle(Point(locx, locy), 5) 
+       # cir.draw(win)  #draws circle at far base corner
+       # cir = Circle(Point(locx+angle[0]*dimz, locy+angle[1]*dimz), 5) 
+       # cir.draw(win) #draws circle at near base corner
 
-        for x in range (dimx*5):
+       # cir = Circle(Point(locx+5*x+angle[0]*dimz, locy+angle[1]*dimz), 5) 
+       # cir.draw(win)   #draws circle at near top right corner
+       # cir = Circle(Point(locx+5*x, locy), 5)  
+       # cir.draw(win)   #draws circle at far top right corner
+
+       # cir = Circle(Point(locx+angle[0]*dimz, locy+angle[1]*dimz+5*y), 5) 
+       # cir.draw(win)   #draws circle at near top right corner
+       # cir = Circle(Point(locx, locy+5*y), 5)  
+       # cir.draw(win)   #draws circle at far top right corner
+
+        for x in range ((dimx-1)*5):
             #front box
-            pt = Point(locx+x, locy+(dimy*5))
+            pt = Point(locx+x, locy+((dimy-1)*5))
             pt.draw(win)
             pt = Point(locx+x,locy)
             pt.draw(win)
             #back box
-            pt = Point(locx+x+(dimz),locy+(dimy*5)+(dimz))
+            pt = Point(locx+x+(angle[0]*dimz),locy+((dimy-1)*5)+(angle[1]*dimz))
             pt.draw(win)
             #pt = Point(locx, locy+dimy
-        for y in range (dimy*5):    
+        for y in range ((dimy-1)*5):    
             #front box
-            pt = Point(locx+(dimx*5),locy+y)
+            pt = Point(locx+((dimx-1)*5),locy+y)
             pt.draw(win)
             pt = Point(locx, locy+y)
             pt.draw(win)
             #back box
-        for z in range (dimz*2):
-            pt = Point(locx+(dimx*5)+(z/5), locy+(5*dimy)+(z/5))
+            pt = Point(locx+((dimx-1)*5)+(angle[0]*dimz),locy+y+(angle[1]*dimz))
             pt.draw(win)
+        for z in range (dimz*2):
+            pass
+            #pt = Point(locx+(dimx*5)+(z/5), locy+(5*dimy)+(z/5))
+            #pt.draw(win)
             #pt = Point(locx+(dimx*5)+(z/4)-1, locy+(dimy*5)+(z/4))
             #pt.draw(win)
 
@@ -367,7 +388,9 @@ if __name__ == '__main__':
             snowflake()
         elif(cont == 'd'):
             cubes = int(input("enter number of cubes: "))
-            dotCube(cubes)
+            angle1 = (input("enter angle 1 (enter nothing for default): "))
+            angle2 = (input("enter angle 2 (enter nothing for default): "))
+            dotCube(cubes, angle1, angle2)
         elif(cont == 'dd'):
             carpets(10)
         elif(cont == 'cs'):
