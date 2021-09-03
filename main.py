@@ -3,7 +3,7 @@ import random as r
 import math
 import numpy
 from graphics import *
-
+from tkinter import *
 
 
 
@@ -57,19 +57,31 @@ def randShape():
             ey = 50
         #calculate slope and y intercept
         if(ex-sx==0):
-            slope = .01
+            slope = .01 #in case slope is zero, prevent crash
         else:
             slope = ((ey-sy)/(ex-sx))
         b=sy-slope*sx
         #draw the line in this loop. init x
-        while(sx!=ex):
-            pt = Point(sx, sx*slope+b)
-            pt.draw(win)
-            if(sx<ex):
-                sx+=1
-            else:
-                sx-=1
-            #t.sleep(.01)
+        
+        # if/else case added because very vertical lines came out choppy,
+        # because there would only be few pixels of space to go a great
+        # distance.
+        if slope < 1 and slope > -1:
+            while(sx!=ex):
+                pt = Point(sx, sx*slope+b)
+                pt.draw(win)
+                if(sx<ex):
+                    sx+=1
+                else:
+                    sx-=1
+        else:
+            while(sy!=ey):
+                pt = Point((sy-b)/slope,sy)
+                pt.draw(win)
+                if(sy<ey):
+                    sy+=1
+                else:
+                    sy-=1 
         sx = ex
         sy = ey
 
@@ -210,6 +222,9 @@ def randHillTops(cartesian):
 
 def carpets(n):
     win = makeWin()
+    carpetSpace = 5
+    carpetWavelength = 5.6   #50, 6 gives big smooth waves, 5, 49 small waves. 
+    carpetHeight = 5
     for w in range(n):
         locx = r.randrange(0, 280)
         locy = r.randrange(0, 280)
@@ -220,7 +235,7 @@ def carpets(n):
             for y in range(dimy):
                 for z in range(dimz):
                     #dot = Point(locx+5*x+2*z, locy+5*y)+2*z)
-                    dot = Point(locx+5*x+2*z, locy+5*math.sin(5*x)+2*z)
+                    dot = Point(locx+carpetSpace*x+2*z, locy+carpetHeight*math.sin(carpetWavelength*x)+2*z)
                     dot.draw(win)
 
 
@@ -359,7 +374,52 @@ def tree():
 
 
 if __name__ == '__main__':
-    cont = 's'
+    root = Tk()
+    
+    randShapeLabel = Label(root, text="")
+    randShapeLabel.grid(row=1, column = 0)
+    randShapeButt = Button(root, text="click 4 shape", command=randShape)
+    randShapeButt.grid(row=6, column=0)
+    
+    randCircLabel = Label(root, text="Number of circles")
+    randCircLabel.grid(row=4,column=1)
+    randCircNum = Entry(root, width=5)
+    randCircNum.grid(row=5, column=1)
+    randCircButt = Button(root, text="click 4 circles", command= lambda: circleRandom(int(randCircNum.get())))
+    randCircButt.grid(row=6, column=1)
+    
+    randHillLabel = Label(root, text="")
+    randHillLabel.grid(row=1, column = 2)
+    randHillButt = Button(root, text="click 4 hills", command= lambda: randHillTops(0))
+    randHillButt.grid(row=6, column=2)
+   
+    dotCubeLabel = Label(root, text="Number of cubes")
+    dotCubeLabel.grid(row=0,column=3)
+    dotCubeNum = Entry(root, width=5)
+    dotCubeNum.grid(row=1, column=3)
+
+    dotCubeAngle1Label = Label(root, text="Angle1 (enter 2 if unsure)")
+    dotCubeAngle1Label.grid(row=2,column=3)
+    dotCubeAngle1 = Entry(root, width=5)
+    dotCubeAngle1.grid(row=3, column=3)
+
+    dotCubeAngle2Label = Label(root, text="Angle2 (enter 2 if unsure)")
+    dotCubeAngle2Label.grid(row=4,column=3)
+    dotCubeAngle2 = Entry(root, width=5)
+    dotCubeAngle2.grid(row=5, column=3)
+    
+    dotCubeButt = Button(root, text="click 4 dotcubes", command= lambda: dotCube(int(dotCubeNum.get()), int(dotCubeAngle1.get()), int(dotCubeAngle2.get()) ))
+    dotCubeButt.grid(row=6, column=3)
+ 
+    carpetButt = Button(root, text="click 4 flying carpets", command= lambda: carpets(5))
+    carpetButt.grid(row=6, column=4)
+    
+    exitButt = Button(root, text="quit", command = root.quit)
+    exitButt.grid(row=7)
+    root.mainloop()
+
+
+    cont = 'q' #change this to use the debug terminal menu rather than tkinter
     while(cont != 'q'):
         if(cont == 'c'):
             num = int(input("how many circles?\n"))

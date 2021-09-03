@@ -32,9 +32,9 @@ working items:
  * flying carpets (could stand to avoid carpet collisions)
  * random hill tops
  * random circles
+ * dotcube 
 
 non-working items worth fixing:
- * dotcube (really close)
  * snowflake
  * circle draw (very close, just make sure dots only go a small amount)
  * fib (find something fib to do)
