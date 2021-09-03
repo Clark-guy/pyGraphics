@@ -26,6 +26,8 @@ to download)
 find out how to UNdraw points (needed for cube spin, maybe
 try a simpler translation first?)
 
+input validation- for dotcube, maybe others
+
 working items:
  * flying carpets (could stand to avoid carpet collisions)
  * random hill tops
