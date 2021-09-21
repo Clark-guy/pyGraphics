@@ -2,6 +2,8 @@ import time as t
 import random as r
 import math
 import numpy
+import PIL.Image
+import PIL.ImageTk
 from graphics import *
 from tkinter import *
 
@@ -377,12 +379,23 @@ def tree():
 
 if __name__ == '__main__':
     root = Tk()
+
+    #randShapeImg = PIL.Image.open("examples/hilltops.gif")
+    #randShapePho = PIL.ImageTk.PhotoImage(randShapeImg)
+    #label = Label(root)
+    #label.img = PhotoImage(file="examples/shape.gif")
+    #label.config(image=label.img)
     
+
+    #RSPLabel = Label(image=randShapePho)
+    #RSPLabel.image = randShapePho
+    #label.grid(row = 1, column = 2)
+
     randShapeLabel = Label(root, text="")
     randShapeLabel.grid(row=1, column = 0)
     randShapeButt = Button(root, text="click 4 shape", command=randShape)
     randShapeButt.grid(row=6, column=0)
-    
+
     randCircLabel = Label(root, text="Number of circles")
     randCircLabel.grid(row=4,column=1)
     randCircNum = Entry(root, width=5)
@@ -396,11 +409,9 @@ if __name__ == '__main__':
     randHillButt.grid(row=6, column=2)
    
     dotCubeLabel = Label(root, text="Number of cubes")
-    dotCubeLabel.grid(row=0,column=3)
+    dotCubeLabel.grid(row=4,column=3)
     dotCubeNum = Entry(root, width=5)
-    dotCubeNum.grid(row=1, column=3)
-
-    
+    dotCubeNum.grid(row=5, column=3)
     dotCubeButt = Button(root, text="click 4 dotcubes", command= lambda: dotCube(int(dotCubeNum.get()) ))
     dotCubeButt.grid(row=6, column=3)
  
