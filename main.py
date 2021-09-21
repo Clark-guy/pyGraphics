@@ -239,19 +239,16 @@ def carpets(n):
                     dot.draw(win)
 
 
-def dotCube(n, angle1, angle2):
+def dotCube(n):
     win = makeWin()
-    if (angle1 == ""):
-        angle1 = 2
-    else:
-        angle1 = int(angle1)
-    if (angle2 == ""):
-        angle2 = 2
-    else:
-        angle2 = int(angle2)
+    angle1 = 0
+    angle2 = 0
     angle = [angle1,angle2] #default angle is [2, 2]
     # for each cube
     for w in range(n):
+        angle[1] = 0
+        while angle[0] == 0 or angle[1] == 0:
+            angle = [r.randrange(-4,4), r.randrange(-4,4)]
         locx = r.randrange(0, 280)  #location on window
         locy = r.randrange(0, 280)
         dimx = r.randrange(4, 15)   #size of cube
@@ -285,18 +282,23 @@ def dotCube(n, angle1, angle2):
             pt.draw(win)
             pt = Point(locx+x,locy)
             pt.draw(win)
-            #back box
-            pt = Point(locx+x+(angle[0]*dimz),locy+((dimy-1)*5)+(angle[1]*dimz))
+            #bottom back box
+            if angle[1] >= 0:
+                pt = Point(locx+x+(angle[0]*dimz),locy+((dimy-1)*5)+(angle[1]*dimz))
+            else:   #top box instead
+                pt = Point(locx+x+(angle[0]*dimz), locy+(angle[1]*dimz))
             pt.draw(win)
-            #pt = Point(locx, locy+dimy
         for y in range ((dimy-1)*5):    
             #front box
             pt = Point(locx+((dimx-1)*5),locy+y)
             pt.draw(win)
             pt = Point(locx, locy+y)
             pt.draw(win)
-            #back box
-            pt = Point(locx+((dimx-1)*5)+(angle[0]*dimz),locy+y+(angle[1]*dimz))
+            #right back box
+            if angle[0] >= 0:
+                pt = Point(locx+((dimx-1)*5)+(angle[0]*dimz),locy+y+(angle[1]*dimz))
+            else:   #left box instead
+                pt = Point(locx+(angle[0]*dimz),locy+y+(angle[1]*dimz))
             pt.draw(win)
         for z in range (dimz*2):
             pass
@@ -398,17 +400,8 @@ if __name__ == '__main__':
     dotCubeNum = Entry(root, width=5)
     dotCubeNum.grid(row=1, column=3)
 
-    dotCubeAngle1Label = Label(root, text="Angle1 (enter 2 if unsure)")
-    dotCubeAngle1Label.grid(row=2,column=3)
-    dotCubeAngle1 = Entry(root, width=5)
-    dotCubeAngle1.grid(row=3, column=3)
-
-    dotCubeAngle2Label = Label(root, text="Angle2 (enter 2 if unsure)")
-    dotCubeAngle2Label.grid(row=4,column=3)
-    dotCubeAngle2 = Entry(root, width=5)
-    dotCubeAngle2.grid(row=5, column=3)
     
-    dotCubeButt = Button(root, text="click 4 dotcubes", command= lambda: dotCube(int(dotCubeNum.get()), int(dotCubeAngle1.get()), int(dotCubeAngle2.get()) ))
+    dotCubeButt = Button(root, text="click 4 dotcubes", command= lambda: dotCube(int(dotCubeNum.get()) ))
     dotCubeButt.grid(row=6, column=3)
  
     carpetButt = Button(root, text="click 4 flying carpets", command= lambda: carpets(5))
@@ -450,7 +443,7 @@ if __name__ == '__main__':
             cubes = int(input("enter number of cubes: "))
             angle1 = (input("enter angle 1 (enter nothing for default): "))
             angle2 = (input("enter angle 2 (enter nothing for default): "))
-            dotCube(cubes, angle1, angle2)
+            dotCube(cubes)
         elif(cont == 'dd'):
             carpets(10)
         elif(cont == 'cs'):
